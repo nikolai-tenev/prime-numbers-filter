@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: producer
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.offerista: DEBUG

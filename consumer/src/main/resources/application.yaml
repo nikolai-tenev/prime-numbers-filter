@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: consumer
+
+server:
+  port: 8081
+
+app:
+  numberGenerator:
+    host: http://localhost:8080
+    path: /number/random/stream
