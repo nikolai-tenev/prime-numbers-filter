@@ -24,27 +24,26 @@ public class SseStreamConsumer {
     private final PrimeNumberCheckerService primeNumberCheckerService;
     private final PrimeNumbersRepository primeNumbersRepository;
     private final WebClient.Builder webClientBuilder;
+    private final String host;
+    private final String path;
 
 
     @Autowired
     public SseStreamConsumer(PrimeNumberCheckerService primeNumberCheckerService,
-            PrimeNumbersRepository primeNumbersRepository,
-            WebClient.Builder webClientBuilder) {
+            PrimeNumbersRepository primeNumbersRepository, WebClient.Builder webClientBuilder,
+            @Value("${app.numberGenerator.host}") String host, @Value("${app.numberGenerator.path}") String path) {
         this.primeNumberCheckerService = primeNumberCheckerService;
         this.primeNumbersRepository = primeNumbersRepository;
         this.webClientBuilder = webClientBuilder;
+        this.host = host;
+        this.path = path;
     }
 
     /**
      * Subscribes to a stream of random numbers, checks for primality and saves prime numbers.
-     *
-     * @param host host of the stream
-     * @param path path of the stream
      */
-    @Autowired
     @PostConstruct
-    public void startEventConsumer(@Value("${app.numberGenerator.host}") String host,
-            @Value("${app.numberGenerator.path}") String path) {
+    public void startEventConsumer() {
         if (!StringUtils.hasText(host) || !StringUtils.hasText(path)) {
             throw new IllegalArgumentException(
                     "Please specify host and path in application configuration or as env variables.");

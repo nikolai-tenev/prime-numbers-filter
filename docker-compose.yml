@@ -1,0 +1,15 @@
+services:
+  consumer:
+    image: consumer:latest
+    container_name: consumer
+    ports:
+      - "8080:8081"
+    depends_on:
+      - producer
+    environment:
+      PRODUCER_URL: "http://producer:8080"
+  producer:
+    image: producer:latest
+    container_name: producer
+    ports:
+      - "8080"

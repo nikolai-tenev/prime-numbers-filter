@@ -23,7 +23,8 @@ class SseStreamConsumerTest {
     @BeforeEach
     void setUp() throws Exception {
         try (var ignored = MockitoAnnotations.openMocks(this)) {
-            testSubject = new SseStreamConsumer(primeNumberCheckerService, primeNumbersRepository, webClientBuilder);
+            testSubject =
+                    new SseStreamConsumer(primeNumberCheckerService, primeNumbersRepository, webClientBuilder, "", "");
         }
     }
 
