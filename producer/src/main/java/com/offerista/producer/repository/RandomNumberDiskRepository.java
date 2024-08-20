@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,6 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class RandomNumberDiskRepository implements RandomNumberRepository {
@@ -35,6 +37,10 @@ public class RandomNumberDiskRepository implements RandomNumberRepository {
      */
     @Override
     public void save(List<Integer> newNumbersBatch) {
+        if (CollectionUtils.isEmpty(newNumbersBatch)) {
+            return;
+        }
+
         try {
             var bufferLogsPath = Paths.get(FILE_PATH);
 
@@ -51,7 +57,7 @@ public class RandomNumberDiskRepository implements RandomNumberRepository {
         try {
             diskWriterService.write(
                     Files.newBufferedWriter(Paths.get(filePath), StandardCharsets.UTF_8, StandardOpenOption.CREATE),
-                    newNumbersBatch.stream().map(String::valueOf).toList()
+                    newNumbersBatch.stream().filter(Objects::nonNull).map(String::valueOf).toList()
             );
 
             LOG.debug("Buffer saved to disk, path: {}", filePath);

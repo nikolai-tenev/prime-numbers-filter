@@ -28,7 +28,7 @@ public class ParallelPrimeNumberCheckerService implements PrimeNumberCheckerServ
 
         int upperLimit = (int) Math.ceil(Math.sqrt(number));
 
-        var isNotPrime = IntStream.iterate(3, (current) -> current < upperLimit, (current) -> current + 2)
+        var isNotPrime = IntStream.iterate(3, (current) -> current <= upperLimit, (current) -> current + 2)
                 .parallel()
                 .anyMatch(currentNum -> number % currentNum == 0);
 
